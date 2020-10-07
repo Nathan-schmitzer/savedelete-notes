@@ -27,18 +27,20 @@ app.get("/api/notes", function (req, res) {
 app.post("/api/notes", function(req, res) {
     let array = [];
     let addId = {...req.body, id: uuidv4()}
-    array.push(addId);
+    
 
-    fs.readFile(__dirname + "./db/db.json", function(err, data) {
+    fs.readFile(__dirname + "/db/db.json", function(err, data) {
         if (err) throw err;
         
-        const storedData = JSON.parse(data);
+        array = JSON.parse(data);
         
-        array.push(storedData);      
+        array.push(addId);      
         
-        fs.writeFile("./db/db.json", data, (err) => {
+        
+        fs.writeFile(__dirname + "/db/db.json",JSON.stringify(array), `utf-8`, err => {
             if (err) throw err;
-            console.log(data);
+            
+            res.end();
         })
     });
 
