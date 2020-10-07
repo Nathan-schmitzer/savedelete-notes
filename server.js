@@ -29,11 +29,19 @@ app.post("/api/notes", function(req, res) {
     let addId = {...req.body, id: uuidv4()}
     array.push(addId);
 
-    fs.readFile(__dirname + "/db/db.json", function(err, data) {
+    fs.readFile(__dirname + "./db/db.json", function(err, data) {
         if (err) throw err;
+        
+        const storedData = JSON.parse(data);
+        
+        array.push(storedData);      
+        
+        fs.writeFile("./db/db.json", data, (err) => {
+            if (err) throw err;
+            console.log(data);
+        })
+    });
 
-        req.json(JSON.parse(data));
-    })
 });
 
 // app.delete("/api/notes/:id", function (req, res, id) {
